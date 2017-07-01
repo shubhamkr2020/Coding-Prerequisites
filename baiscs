@@ -1,0 +1,386 @@
+#include<bits/stdc++.h>
+using namespace std;
+#define gc getchar_unlocked
+#define rep(i,j,k) for(i=j; i<k; i++)
+#define rrep(i,j,k) for(i=j; i>=k; i--)
+#define ZERO(a) memset(a,0,sizeof(a))
+#define lowbit(x) (x&(-x))
+#define sz(a) int((a).size()) 
+#define pb push_back 
+#define all(c) (c).begin(),(c).end()
+#define sin scan_int()
+#define mp make_pair
+#define fi first
+#define se second
+#define sc(x) scanf("%d",&x)
+#define sc2(x,y) scanf("%d%d",&x,&y)
+#define sc3(x,y,z) scanf("%d%d%d",&x,&y,&z)
+#define scl(x) scanf("%lld",&x)
+#define scl2(x,y) scanf("%lld%lld",&x,&y)
+#define scl3(x,y,z) scanf("%lld%lld%lld",&x,&y,&z)
+#define scstr(x) scanf("%s",x)
+#define pd(x) printf("%d",x)
+#define pstr(x) printf("%s",x)
+#define newl() printf("\n")
+#define xx first
+#define yy second
+typedef long long ll;
+typedef vector<int> vi;
+typedef vector<string> vs;
+typedef vector<vi> vvi;
+typedef pair<string,int> psi; 
+typedef pair<int,int> pii;
+inline int scan_int() {
+   register int NR=0,sign=1;    register char c=gc();
+    while( c < 48 || c > 57 ){if(c=='-')sign=0; c=gc();}
+    while(c>47 && c< 58)
+    {    NR = (NR << 3) + (NR << 1) + (c - 48);    c=gc();    }
+    return (sign?NR:(-NR));}
+
+std::ios_base::sync_with_stdio(false);
+cin.tie(NULL);
+
+// copy paste these two lines inside main() for fast cin cout................................
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+ #define sz(a) int((a).size()) 
+ #define pb push_back 
+ #define all(c) (c).begin(),(c).end() 
+ #define tr(c,i) for(typeof((c).begin() i = (c).begin(); i != (c).end(); i++) 
+ #define present(c,x) ((c).find(x) != (c).end())				// used in set and map...... 
+ #define cpresent(c,x) (find(all(c),x) != (c).end())			// used in vectors......
+
+ bool operator < (const fraction& f) const					// used to overload '<' operator in a struct...........
+
+	// comp class for set.........................................
+    // now declare the set as set<int,classcomp> st; ...............
+struct classcomp {
+  bool operator() (const int& lhs, const int& rhs) const
+  {return lhs<rhs;}
+};
+
+
+ 	// use power up stl on topcoders for stl references......................
+
+	// use int n = sint(); to input an int value ...................
+inline int sint()
+   {int NR=0,sign=1;    char c=gc();
+    while( c < 48 || c > 57 ){if(c=='-')sign=0; c=gc();}
+    while(c>47 && c< 58)
+    {    NR = (NR << 3) + (NR << 1) + (c - 48);    c=gc();    }
+    return (sign?NR:(-NR));
+}
+
+	// to input a long log value .............................
+inline ll slong()
+    {
+    ll NR=0;
+	int sign=1;
+    char c=gc();
+    while( c < 48 || c > 57 ){if(c=='-')sign=0; c=gc();}
+    while(c>47 && c< 58)
+    {
+    NR = (NR << 3) + (NR << 1) + (c - 48);
+    c=gc();
+    }
+    return (sign?NR:(-NR));
+    }
+
+......................................................................................
+
+      // to convert into string for any type..........................
+
+template<class T>
+string to_string(T s){
+  stringstream tin;
+  tin<<s;
+  string res;
+  getline(tin,res);
+  return(res);
+} 
+
+.......................................................................... 
+
+	// convert into binary form......
+int n;
+cin>>n;
+string r;
+while(n!=0) {r=(n%2==0 ?"0":"1")+r; n/=2;}
+
+.............................................................................................
+
+    //swap using bitwise operator.....................
+
+void swap(char *a,char *b)
+{
+    if( *a == *b )
+        return;
+    *a^=*b;
+    *b^=*a;
+    *a^=*b;
+}
+
+.........................................................................................................
+
+    //simpleSieve --- Use vector to store primes upto 10^7 only else use segmentedSieve..........................
+
+void simpleSieve(int limit, vector<int> &prime)
+{
+    bool mark[limit+1];
+    memset(mark, true, sizeof(mark));
+ 
+    for (int p=2; p*p<limit; p++)
+    {
+        if (mark[p] == true)
+        {
+            for (int i=p*2; i<limit; i+=p)
+                mark[i] = false;
+        }
+    }
+
+    for (int p=2; p<limit; p++)
+    {
+        if (mark[p] == true)
+        {
+            prime.push_back(p);
+            cout << p << "  ";
+        }
+    }
+}
+
+    //segmentedSieve ---- Directly prints the primes upto n using "simpleSieve"..........................
+
+void segmentedSieve(int n)
+{
+    int limit = floor(sqrt(n))+1;
+    vector<int> prime;  
+    simpleSieve(limit, prime); 
+
+    int low  = limit;
+    int high = 2*limit;
+
+    while (low < n)
+    {
+        if (high >= n) high = n;
+        {
+        bool mark[limit+1];
+        memset(mark, true, sizeof(mark));
+
+        for (int i = 0; i < prime.size(); i++)
+        {
+            int loLim = floor(low/prime[i]) * prime[i];
+            if (loLim < low)
+                loLim += prime[i];
+
+            for (int j=loLim; j<high; j+=prime[i])
+                mark[j-low] = false;
+        }
+
+        for (int i = low; i<high; i++)
+            if (mark[i - low] == true)
+                cout << i << "  ";
+
+        low  = low + limit;
+        high = high + limit;
+    }
+    }
+}
+
+........................................................................................
+
+    //(pow( a, b) % n).........modular exponentiation (LASTDIG spoj).....................
+long long modexpo(long long a,long long b,long long n)
+{
+    long long d=1;
+    while(b)
+    {
+        if(b&1)
+            d=(d*a)%n;
+        b>>=1;
+        a=(a*a)%n;
+    }
+    return d;
+}
+
+.........................................................................................
+
+    //ifPrime(int n).....................................
+bool ifPrime(long long n)
+{
+	if(n==1)
+        return false;
+    for(int i=2; i*i<n+1; i++)
+        if(n%i == 0)
+        return false;
+    return true;
+}
+
+.....................................................................................
+
+	// gcd.................................................
+inline int gcd(int a, int b) {
+    return b ? gcd(b, a % b) : a;
+}
+
+..........................................................................................
+
+	// euler totient function phi for number of relative primes (coprimes) ..............
+	// phi(n) = n(1-1/p1)(1-1/p2).........
+int phi(int n)
+{    
+    int result = n;
+ 
+    for (int p=2; p*p<=n; ++p)
+    {
+        if (n % p == 0)
+        {
+            while (n % p == 0)
+                n /= p;
+            result -= result / p;
+        }
+    }
+ 
+    if (n > 1)
+        result -= result / n;
+    return result;
+}
+
+..........................................................................................
+
+	// nCr = c[n][r], precompute by calling the function comb(1005)..............................
+ll c[1009][1009];
+ 
+ void comb(ll n)
+ {
+     ll i,j;
+     for(i=0; i<=n; i++)
+         c[i][0] = 1;
+     for(i=1; i<=n; i++)
+         c[i][i] = 1;
+     for(i=2; i<=n; i++)
+         for(j=1; j<i; j++)
+         c[i][j] = (c[i-1][j] + c[i-1][j-1]);
+         
+ }
+
+....................................................................................................
+
+ 	// GRUNDY NUMBER WITH MEX(minimum excludant - smallest non-negative number not present in the set)..................
+ 	// game theory when a player can subtract 2,3 or 5 from n .................................
+ 	// xor of grundy numbers of sub games decides the winner if(0) then second wins else first .....................
+int grundy[101];
+int mex(set<int> s)
+    {
+    int m=0;
+    while(s.find(m) != s.end())
+        m++;
+    return m;
+}
+
+int Grundy(int n)
+    {
+    set<int> s;
+    memset(grundy,-1,sizeof(grundy));
+    grundy[0] = 0;
+    grundy[1] = 0;
+    grundy[2] = 1;
+    grundy[3] = 2;
+    grundy[4] = 2;
+    grundy[5] = 1;
+    if(grundy[n] != -1)
+        return grundy[n];
+    s.insert(Grundy(n-2));
+    s.insert(Grundy(n-3));
+    s.insert(Grundy(n-5));
+    grundy[n] = mex(s);
+    return grundy[n];
+}
+
+..................................................................................
+
+	// matrix rotation of mata 90 deg clockwise..................
+int mata[2000][2000],matb[2000][2000];
+void rotate(int n)
+{
+    int i,j;
+    for(i=1; i<n+1; i++)		// take transpose.....
+    for(j=1; j<n+1; j++)
+    matb[j][i] = mata[i][j];
+    
+    for(i=1; i<n+1; i++)		// reverse column wise......
+    for(j=1; j<n+1; j++)
+    mata[i][j] = matb[i][n-j+1];
+    
+}
+
+............................................................................................
+
+
+		// SEGMENT TREE IMPLEMENTATION on an array.................................................
+
+// The maximum nodes can be (2*N -1) , we can take 4*N to be on safe side
+int seg_tree[4*N];     // seg_tree[i] = value at node number i
+void build(int s ,int e, int node_num) // [s..e] is the range of node:- node_num
+{
+    if(s==e) // We reach a leaf node
+    {
+      seg_tree[node_num] = A[s];
+      return;
+    }
+    int m = (s+e)/2; // splitting the current range
+    build(s,m,node_num*2); // building then left subtree
+    build(m+1,e,node_num*2+1); // building the right subtree
+   
+    // Updating value at current node after building its left and right subtree
+    
+    seg_tree[node_num] = seg_tree[node_num*2] + seg_tree[node_num*2+1];
+    
+   return;
+}
+// For building the segment tree we call the function build(1,N,1) from main()
+
+..........................................................................................
+
+ 	// max and min function without signs ...................
+
+r = y + ((x - y) & ((x - y) >> (sizeof(int) * CHAR_BIT - 1))); // min(x, y)
+r = x - ((x - y) & ((x - y) >> (sizeof(int) * CHAR_BIT - 1))); // max(x, y)
+
+...........................................................................................
+
+
+	// finonacci n in log  time..................................
+
+void multiply(int F[2][2], int M[2][2]);
+void power(int F[2][2], int n);
+/* function that returns nth Fibonacci number */
+int fibo(int n) {
+  int F[2][2] = {{1,1},{1,0}};
+  if (n == 0)
+    return 0;
+  power(F, n-1);
+  return F[0][0];
+}
+/* Optimized version of power() in method 4 */
+void power(int F[2][2], int n) {
+  if( n == 0 || n == 1)
+      return;
+  int M[2][2] = {{1,1},{1,0}};
+  power(F, n/2);
+  multiply(F, F);
+  if (n%2 != 0)
+     multiply(F, M);
+}
+void multiply(int F[2][2], int M[2][2]) {
+  int x =  F[0][0]*M[0][0] + F[0][1]*M[1][0];
+  int y =  F[0][0]*M[0][1] + F[0][1]*M[1][1];
+  int z =  F[1][0]*M[0][0] + F[1][1]*M[1][0];
+  int w =  F[1][0]*M[0][1] + F[1][1]*M[1][1];
+  F[0][0] = x;
+  F[0][1] = y;
+  F[1][0] = z;
+  F[1][1] = w;
+}
+
+.....................................................................................
